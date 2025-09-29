@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">Edit Profile</h2>
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('aboutUser') }}">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" name="firstName" id="firstName" class="form-control" value="{{ currentUser.get('firstName', '') }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" name="lastName" id="lastName" class="form-control" value="{{ currentUser.get('lastName', '') }}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" name="email" id="email" class="form-control" value="{{ currentUser.get('email', '') }}" readonly>
+                            <div class="form-text">Email cannot be changed.</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phoneNumber" class="form-label">Phone Number</label>
+                            <div class="input-group">
+                                <select class="input-group-text" name="phonePrefix">
+                                    <option value="+380" {% if currentUser.get('phonePrefix') == '+380' %}selected{% endif %}>+380</option>
+                                    <option value="+48" {% if currentUser.get('phonePrefix') == '+48' %}selected{% endif %}>+48</option>
+                                    <option value="+49" {% if currentUser.get('phonePrefix') == '+49' %}selected{% endif %}>+49</option>
+                                    <option value="+1" {% if currentUser.get('phonePrefix') == '+1' %}selected{% endif %}>+1</option>
+                                </select>
+                                <input type="tel" name="phoneNumber" id="phoneNumber" class="form-control" value="{{ currentUser.get('phoneNumber', '') }}"
+                                    pattern="[0-9]{9}" maxlength="9" title="Please enter a 9-digit phone number (e.g., 971234567)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                        <input type="date" name="dateOfBirth" id="dateOfBirth" class="form-control" value="{{ currentUser.get('dateOfBirth', '') }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="biography" class="form-label">Biography</label>
+                        <textarea name="biography" id="biography" class="form-control" rows="3">{{ currentUser.get('biography', '') }}</textarea>
+                    </div>
+
+                    <hr class="my-4">
+                    <h5 class="mb-3">Regional Settings</h5>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="country" class="form-label">Country</label>
+                            <input type="text" name="country" id="country" class="form-control" value="{{ currentUser.get('country', '') }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" name="city" id="city" class="form-control" value="{{ currentUser.get('city', '') }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="timezone" class="form-label">Timezone</label>
+                        <input type="text" name="timezone" id="timezone" class="form-control" value="{{ currentUser.get('timezone', 'Europe/Kyiv') }}">
+                    </div>
+
+                    <hr class="my-4">
+                    <h5 class="mb-3">Preferences</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="defaultCurrency" class="form-label">Default Currency</label>
+                            <select name="defaultCurrency" id="defaultCurrency" class="form-select">
+                                <option value="UAH" {% if currentUser.get('defaultCurrency', 'UAH') == 'UAH' %}selected{% endif %}>UAH</option>
+                                <option value="USD" {% if currentUser.get('defaultCurrency') == 'USD' %}selected{% endif %}>USD</option>
+                                <option value="EUR" {% if currentUser.get('defaultCurrency') == 'EUR' %}selected{% endif %}>EUR</option>
+                            </select>
+                        </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="language" class="form-label">Language</label>
+                                <select name="language" id="language" class="form-select">
+                                    <option value="uk" {% if currentUser.get('language', 'uk') == 'uk' %}selected{% endif %}>Ukrainian</option>
+                                    <option value="en" {% if currentUser.get('language') == 'en' %}selected{% endif %}>English</option>
+                                </select>
+                            </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="dateFormat" class="form-label">Date Format</label>
+                            <select name="dateFormat" id="dateFormat" class="form-select">
+                                <option value="DD.MM.YYYY" {% if currentUser.get('dateFormat', 'DD.MM.YYYY') == 'DD.MM.YYYY' %}selected{% endif %}>DD.MM.YYYY</option>
+                                <option value="MM/DD/YYYY" {% if currentUser.get('dateFormat') == 'MM/DD/YYYY' %}selected{% endif %}>MM/DD/YYYY</option>
+                                <option value="YYYY-MM-DD" {% if currentUser.get('dateFormat') == 'YYYY-MM-DD' %}selected{% endif %}>YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 mt-3">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

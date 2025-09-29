@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="col-md-6 offset-md-3">
+    <h2 class="text-center">Finish setting up your profile</h2>
+    <p class="text-center text-muted">Please enter additional information to continue</p>
+    
+    <form method="POST" action="{{ url_for('completeProfile') }}">
+        <div class="mb-3">
+            <label for="firstName" class="form-label">Your name</label>
+            <input type="text" name="firstName" class="form-control" id="firstName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Your surname</label>
+            <input type="text" name="lastName" class="form-control" id="lastName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="timezone" class="form-label">Time zone</label>
+            <input type="text" name="timezone" class="form-control" id="timezone" required placeholder="Напр. Europe/Kyiv">
+            <div class="form-text">
+                Enter your time zone in IANA format (e.g. America/New_York, Europe/Paris).
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Save and continue</button>
+    </form>
+</div>
+{% endblock %}
