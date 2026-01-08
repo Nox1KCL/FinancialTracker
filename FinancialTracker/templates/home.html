@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="text-center">
+    <h1>Manage your finances</h1>
+    <p class="lead">Track income and expenses to make better financial decisions.</p>
+    <hr>
+    <div>
+        {% if 'userId' in session %}
+            <p>You are logged in as <strong>{{ session.username }}</strong>.</p>
+            <a href="{{ url_for('transactions') }}" class="btn btn-primary btn-lg">Go to transactions</a>
+        {% else %}
+            <p>To get started, please log in or register.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Login to your account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <form method="POST" action="{{ url_for('home') }}">
+                    <div class="mb-3">
+                        <label for="login-username" class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" id="login-username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="login-password" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="login-password" required>
+                    </div>
+                    <button type="submit" name="action" value="login" class="btn btn-success w-100">Sign In</button>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="{{ url_for('passwordReset') }}">Forgot Password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel">Create Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                 {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <form method="POST" action="{{ url_for('home') }}">
+                    <div class="mb-3">
+                        <label for="reg-username" class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" id="reg-username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reg-email" class="form-label">Email Address</label>
+                        <input type="email" name="email" class="form-control" id="reg-email" required placeholder="name@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="reg-password" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="reg-password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reg-confirm-password" class="form-label">Confirm password</label>
+                        <input type="password" name="confirmPassword" class="form-control" id="reg-confirm-password" required>
+                    </div>
+                    <button type="submit" name="action" value="register" class="btn btn-primary w-100">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalToOpenId = '{{ openModal }}';
+        if (modalToOpenId) {
+            const modalElement = document.getElementById(modalToOpenId + 'Modal');
+            if (modalElement) {
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+            }
+        }
+    });
+</script>
+{% endblock %}
